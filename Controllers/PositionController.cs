@@ -15,12 +15,11 @@ namespace dotNetCoreApi.Controllers
 
         // GET all persons and rooms
         [HttpGet]
-        public HttpResponseMessage Get()
+        public string Get()
         {
             db.Connect();
-            StringContent result = db.ExecuteQuery(DBQueries.GetAllUsers());
-            var resp = new HttpResponseMessage() { Content = result };
-            return resp;
+            string result = db.ExecuteQuery(DBQueries.GetAllUsers());
+            return result;
         }
 
         //POST person position
