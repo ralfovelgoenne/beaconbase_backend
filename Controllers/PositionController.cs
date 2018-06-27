@@ -20,7 +20,7 @@ namespace dotNetCoreApi.Controllers
         {
             db.Connect();
             string json = db.ExecuteQuery(DBQueries.GetAllUsers());
-            var result = new ContentResult() { Content = "json", ContentType = "application/json"};
+            var result = new ContentResult() { Content = json, ContentType = "application/json"};
 
             return result;
         }
