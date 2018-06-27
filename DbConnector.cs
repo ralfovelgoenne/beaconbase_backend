@@ -22,7 +22,6 @@ namespace dotNetCoreApi
         //    "TrustServerCertificate=False;" +
         //    "Connection Timeout=5;";
 
-
         public bool Connect()
         {
             var dbConnectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_DefaultConnectionString");
