@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotNetCoreApi.Controllers
@@ -15,11 +16,13 @@ namespace dotNetCoreApi.Controllers
 
         // GET all persons and rooms
         [HttpGet]
-        public JsonResult Get()
+        public ContentResult Get()
         {
             db.Connect();
-            StringContent result = db.ExecuteQuery(DBQueries.GetAllUsers());
-            return  Json(result.ReadAsStringAsync().Result);
+            string json = db.ExecuteQuery(DBQueries.GetAllUsers());
+            var result = new ContentResult() { Content = "json", ContentType = "application/json"};
+
+            return result;
         }
 
         //POST person position

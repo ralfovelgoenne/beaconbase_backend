@@ -39,19 +39,19 @@ namespace dotNetCoreApi
             return true;
         }
 
-        public StringContent ExecuteQuery(string sql)
+        public string ExecuteQuery(string sql)
         {
             if (string.IsNullOrEmpty(sql))
             {
                 Debug.WriteLine("SQL command not set. Make sure your SQL command is not empty");
-                return null;
+                return "Query Error";
             }
 
             if (Object.ReferenceEquals(dbConnection, null))
             {
                 Debug.WriteLine("dbConnection not initialized. " +
                     "Run 'Connect()' method at least once before calling any other method");
-                return null;
+                return "Query Error";
             }
 
             using (SqlCommand command = new SqlCommand(sql, dbConnection))
@@ -65,14 +65,12 @@ namespace dotNetCoreApi
                     sqlReader.Read();
                     IDataRecord dr = sqlReader;
                     string txtResult = dr[0].ToString();
-                    StringContent jsonContent = new StringContent(txtResult, Encoding.UTF8, "application/json");
-
-                    return jsonContent;
+                    return txtResult;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    return null;
+                    return "Query Error";
                 }
             }
         }
