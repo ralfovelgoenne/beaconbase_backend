@@ -18,8 +18,8 @@ namespace dotNetCoreApi.Controllers
         public string Get()
         {
             db.Connect();
-            string result = db.ExecuteQuery(DBQueries.GetAllUsers());
-            return result;
+            StringContent result = db.ExecuteQuery(DBQueries.GetAllUsers());
+            return result.ReadAsStringAsync().Result;
         }
 
         //POST person position
