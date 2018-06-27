@@ -33,7 +33,6 @@ namespace dotNetCoreApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
     }

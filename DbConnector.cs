@@ -11,17 +11,6 @@ namespace dotNetCoreApi
     {
         private SqlConnection dbConnection = new SqlConnection();
 
-        //private const string dbConnectionString = "Server=tcp:peopletrackerserver.database.windows.net," +
-        //    "1433;" +
-        //    "Initial Catalog=People_Tracker;" +
-        //    "Persist Security Info=False;" +
-        //    "User ID=qperior;" +
-        //    "Password=Consultants2018;" +
-        //    "MultipleActiveResultSets=False;" +
-        //    "Encrypt=True;" +
-        //    "TrustServerCertificate=False;" +
-        //    "Connection Timeout=5;";
-
         public bool Connect()
         {
             var dbConnectionString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_DefaultConnectionString");
