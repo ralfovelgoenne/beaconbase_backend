@@ -6,44 +6,68 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace dotNetCoreApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class ValuesController : Controller
     {
         
         static Restroom[] restrooms = { new Restroom("id1", "name1"), new Restroom("id1", "name1"), new Restroom("id1", "name1") };
 
+        static int approxWaitTimePerPosition = 3;
+
         static List<QueuePosition> queue = new List<QueuePosition> 
         { 
             new QueuePosition(0),
-            new QueuePosition(1),
-            new QueuePosition(2),
-            new QueuePosition(3),
-            new QueuePosition(4),
-            new QueuePosition(5),
-            new QueuePosition(6),
-            new QueuePosition(7),
-            new QueuePosition(8),
-            new QueuePosition(9)
+            new QueuePosition(1)
         };  
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<Restroom> Get()
+        public IEnumerable<Restroom> GetRooms()
         {
             return restrooms;
         }
 
         // GET api/values/5
         [HttpGet("{identity}")]
-        public int Get(string identity)
+        public int GetCurrentPosition(string identity)
+        {
+            return this.getCurrentPositionInQueue(identity);
+        }
+
+        [HttpGet("{identity}")]
+        public int GetCurrentWaitTime(string identity)
+        {
+            int position = this.getCurrentPositionInQueue(identity);
+            return position * approxWaitTimePerPosition;
+        }
+
+        // GET api/values/5
+        [HttpPut("{identity}")]
+        public int CancelPosition(string identity)
+        {
+            return this.cancelPositionInQueue(identity);
+        }
+
+        // GET api/values/5
+        [HttpGet("{identity}")]
+        public int GetNewPosition(string identity)
         {
             return this.getNextFreePositionInQueue(identity);
         }
 
+        // GET api/values/5
+        [HttpGet("{identity}")]
+        public int GetQueueLength(string identity)
+        {
+            return queue.Count;
+        }
+
         private int getNextFreePositionInQueue(string identity)
         {
+            int count = 0;
             for(int counter = 0; counter < queue.Count; counter++) 
             {
+                count++;
                 if (! queue[counter].isTaken())
                 {
                     queue[counter].setIdentity(identity);
@@ -57,7 +81,38 @@ namespace dotNetCoreApi.Controllers
                     }
                 }
             }
-            return 0;
+
+            QueuePosition position = new QueuePosition(count);
+            position.setIdentity(identity);
+            queue.Add(position);
+            return position.getPosition();
+        }
+
+        private int cancelPositionInQueue(string identity)
+        {
+            for(int counter = 0; counter < queue.Count; counter++) 
+            {
+                if (queue[counter].getIdentity().Equals(identity))
+                {
+                        queue[counter].setIdentity(null);
+                        return 0;
+                }
+            }
+
+            return 1;
+        }
+
+        private int getCurrentPositionInQueue(string identity)
+        {
+            for(int counter = 0; counter < queue.Count; counter++) 
+            {
+                if (queue[counter].getIdentity().Equals(identity))
+                {
+                        return queue[counter].getPosition();
+                }
+            }
+
+            return 1000;
         }
 
         // GET api/values/5

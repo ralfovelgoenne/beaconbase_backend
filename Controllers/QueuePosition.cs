@@ -4,6 +4,7 @@ namespace dotNetCoreApi.Controllers
     {
         private int position;
         private string identity;
+        private bool vip;
 
         public QueuePosition (int settedPosition)
         {
@@ -19,6 +20,16 @@ namespace dotNetCoreApi.Controllers
         public bool isTaken() 
         {
             return identity != null;
+        }
+
+        public bool isVip() 
+        {
+            return vip;
+        }
+
+        public void setVip(bool settedVip)
+        {
+            vip = settedVip;
         }
 
         public int getPosition()
